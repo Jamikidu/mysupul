@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>예약정보입력</title>
+</head>
+<body>
+<h1>예약자 정보</h1>
+<form method="post" action="reservating">
+	<table border="">
+		<input type="hidden" name="time" th:value="${time}" />
+		<input type="hidden" name="date" th:value="${date}" />
+		<input type="hidden" name="themaName" th:value="${themaName}" />
+		<input type="hidden" name="price" th:value="${price}" />
+		<input type="hidden" name="rvPrice" th:value="${rvPrice}" />
+		<input type="hidden" name="branch" th:value="${thema.branch}" />
+		<input type="hidden" name="themaId" th:value="${thema.themaId}" />
+		<tr>
+			<td>테마이름:</td>
+			<td><input type="text" th:value="${thema.title}" readonly="readonly"/></td>
+		</tr>
+		<tr>
+			<td>선택한 시간:</td>
+			<td><span>[[${date}+' / '+${day}+' / '+${picktime}]]</span></td>
+		</tr>
+		<tr>
+			<td>예약자명:</td>
+			<td><input type="text" name="userName" th:value="session.userName" /></td><!--세션.이름-->
+		</tr>
+		<tr>
+			<td>예약인원:</td>
+			<td><input type="text" name="rvPeople" /></td>
+		</tr>
+		<tr>
+			<td>주의사항:</td>
+			<td>이영준 빨리빨리빨리빨리빨리빨리빨리충 개시끄러</td>
+		</tr>
+		<tr>
+			<td colspan="2" align="center">
+				<label>
+					<input type="checkbox" name="agree" value="agree">개인정보 처리방침 및 주의사항에 동의합니다.
+				</label>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" align="right">
+				<input type="submit" value="예약하기"/>
+			</td>
+		</tr>
+	</table>
+    
+</form>
+</body>
+</html>

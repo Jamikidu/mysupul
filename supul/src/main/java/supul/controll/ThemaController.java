@@ -4,13 +4,16 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.net.URLEncoder;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,10 +64,17 @@ public class ThemaController {
 	
     // 테마 소개 페이지
     @RequestMapping("introduce")
-    public String introduceForm(Model model,@RequestParam(name="branchId",defaultValue = "1") int branchId , Branch bd,@RequestParam(name = "sortBy",defaultValue = "themaId" ) String sortBy,
-			@RequestParam(value = "date", required = false) LocalDate date, @PageableDefault(size = 8,sort = "date" , 
+    public String introduceForm(Model model,@RequestParam(name="branchId",defaultValue = "1") int branchId,
+    		Branch bd,@RequestParam(name = "sortBy",defaultValue = "themaId" ) String sortBy,
+			@RequestParam(value = "date", required = false) LocalDate date,
+			@PageableDefault(size = 8,sort = "date",
 			direction = Direction.DESC ) Pageable pageable, Reservation rv
 			) {
+
+    	if(date==null) {
+    		date = LocalDate.now();
+    	}
+
     	pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
 	            Sort.by(Sort.Direction.ASC, sortBy)); 
     	// 테마 데이터, 매장 데이터
@@ -87,16 +97,62 @@ public class ThemaController {
     
     //===================정현부분=========================//
     
-    @RequestMapping("/reservation/OK")
-	String reservation_OK(Model mm,
-			@RequestParam(value="picktime")LocalTime picktime,
-			Thema thema,@RequestParam(value = "date", required = false) LocalDate date,
+    @GetMapping("/reservating")
+    String reservationg(Model model,
+    		@RequestParam("themaId") int themaId,
+    		@RequestParam(value="picktime")LocalTime picktime,
+    		@RequestParam(value = "date", required = false) LocalDate date,
+    		Thema thema) {
+       System.out.println("reservating() 진입");
+       //System.out.println("초기 thema =>"+ thema);
+       
+       Thema pickthema = themaMapper.selectById(themaId);
+       thema = pickthema;
+       System.out.println("수정 후 thema =>"+ thema);
+       
+       Map<DayOfWeek, String> kDay = new HashMap<>();
+       kDay.put(DayOfWeek.MONDAY, "월");
+       kDay.put(DayOfWeek.TUESDAY, "화");
+       kDay.put(DayOfWeek.WEDNESDAY, "수");
+       kDay.put(DayOfWeek.THURSDAY, "목");
+       kDay.put(DayOfWeek.FRIDAY, "금");
+       kDay.put(DayOfWeek.SATURDAY, "토");
+       kDay.put(DayOfWeek.SUNDAY, "일");
+       
+       
+       model.addAttribute("thema",thema);
+       model.addAttribute("time",picktime);
+       model.addAttribute("date",date);
+       model.addAttribute("day",kDay.get(date.getDayOfWeek()));
+     
+
+       //reservation에 들어갈거
+       model.addAttribute("themaName",thema.getTitle());
+       
+       
+       List<LocalTime> timeLists = themaMapper.timetableList(themaId);
+       //System.out.println("시간들 =>"+timeLists);
+       
+       if(picktime.equals(timeLists.get(0)) || 
+    		   picktime.equals(timeLists.get(timeLists.size()-1))) {
+    	   model.addAttribute("price",(int)(thema.getPrice()*0.8/1000)*1000);
+    	   System.out.println("첫타임, 막타임! => "+(int)(thema.getPrice()*0.8/1000)*1000);
+       }else {
+    	   model.addAttribute("price",thema.getPrice());
+       }
+       model.addAttribute("rvPrice",(int)(thema.getPrice()*0.2/1000)*1000);
+       
+       
+       
+       
+       return "reserve/rvForm";
+    }
+    
+    @PostMapping("/reservating")
+	String reservation_OK(Model model,
+			@RequestParam("rvPeople")int rvPeople,
 			Reservation rv) {
 		System.out.println("reservation_OK() 진입");
-		
-		LocalTime rvtime = picktime;
- 
-		System.out.println("theme 초기값 => "+thema);
 		
 		//예약번호 생성을 위한 포맷작업 
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyMMdd");
@@ -120,33 +176,17 @@ public class ThemaController {
 			}
 		}
 		
-		rv.setDate(date);
-		rv.setTime(rvtime);
 		rv.setRvDate(LocalDateTime.now());
-		rv.setRvPeople(thema.getPeople());
+		rv.setRvPeople(rvPeople);
 		
-		/*
-		 * if(rvtime.equals(thema.getTimetable()[0]) ||
-		 * rvtime.equals(thema.getTimetable()[thema.getTimetable().length-1])) {
-		 * rv.setPrice((int)(thema.getPrice()*0.8/1000*1000)); }else {
-		 * rv.setPrice(thema.getPrice()); }
-		 */
-		
-		rv.setThemaName(thema.getTitle());
-		
-//		System.out.println("rv: "+rv);
-//		System.out.println(picktime);
-//		System.out.println(theme.getDate());
+		System.out.println("예약은!! => "+rv);
 		themaMapper.reserve(rv);
-		String Msg = date+" "+picktime+" 시간 예약 완료!";
-		mm.addAttribute("msg", Msg);
-		mm.addAttribute("goUrl", "/thema/introduce");
+		String Msg = "예약 완료!";
+		model.addAttribute("msg", Msg);
+		model.addAttribute("goUrl", "/thema/introduce");
 		
-		return "rv/alert";
+		return "reserve/alert";
 	}
-    
-     
-    
     
 
     //==================기은 부분===================//

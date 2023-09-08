@@ -53,7 +53,7 @@ public class ReserveController {
 	//@Scheduled(cron = "0 */10 * * * *") // 10분마다 실행
 	//@Scheduled(cron = "0 * * * * *") // 매 분의 0초에 실행 (1분마다)
 	
-    @Scheduled(cron = "0 */10 * * * *")
+    //@Scheduled(cron = "0 */10 * * * *")
     public void sendEmailEveryHour() {
         
     	List<Reservation> todayrvs = mapper.todayreserve(LocalDate.now());
@@ -115,7 +115,7 @@ public class ReserveController {
 			}
 		}
 		
-		rv.setDate(thema.getDate());
+		//rv.setDate(thema.LocalDate.now());
 		rv.setTime(rvtime);
 		rv.setRvDate(LocalDateTime.now());
 		rv.setRvPeople(thema.getPeople());
@@ -133,11 +133,11 @@ public class ReserveController {
 //		System.out.println(picktime);
 //		System.out.println(theme.getDate());
 		mapper.reserve(rv);
-		String Msg = thema.getDate().toString()+" "+picktime+" 시간 예약 완료!";
-		mm.addAttribute("msg", Msg);
+		//String Msg = thema.getDate().toString()+" "+picktime+" 시간 예약 완료!";
+		mm.addAttribute("msg", "예약 완료");
 		mm.addAttribute("goUrl", "/");
 		
-		return "rv/alert";
+		return "reserve/alert"; 
 	}
 	
 	//예약확인
@@ -172,7 +172,7 @@ public class ReserveController {
 			return "myrvinfo";
 		}
 		
-		return "rv/alert";
+		return "reserve/alert";
 	}
 	
 	//예약취소
@@ -193,6 +193,6 @@ public class ReserveController {
 			mm.addAttribute("goUrl", "/");
 			return "alert";
 		}
-		return "rv/alert";
+		return "reserve/alert";
 	}
 }

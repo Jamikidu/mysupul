@@ -33,7 +33,7 @@ public interface ThemaMapper {
 	// 매장명 검색
 	String brName(int branchId);
 	
-	 List<LocalTime> timetableList(@Param("themaId") int themaId);
+	List<LocalTime> timetableList(@Param("themaId") int themaId);
 	
 	//==================테마소개=====================//
     List<Thema> selectList(); 
@@ -50,7 +50,7 @@ public interface ThemaMapper {
     int fileDelete(Thema thema);
     int idPwChk(Thema thema);
     
-    //===================정형부분=======================
+    //===================정현부분=======================
     ArrayList<String> chkrvstatus(LocalDate date );
   //예약번호 중복체크
   	int chkrvnum(String rvnum);

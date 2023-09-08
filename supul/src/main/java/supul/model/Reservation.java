@@ -40,8 +40,8 @@ public class Reservation {
 	    @Column(name="rv_people")
 	    int rvPeople;
 	    @Column(name="rv_price")
-	    int rvPrice;    
-	    int price;    
+	    int rvPrice;
+	    int price;
  
 	    @Column(name = "rv_date")
 	    LocalDateTime rvDate;
