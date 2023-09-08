@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>thema/detail</title>
+</head>
+<body>
+<h1>thema/detail</h1>
+
+	<table border="">
+		<tr>
+			<td>Thema ID</td><td th:text="${thema.themaId}"/>
+		</tr><tr>
+			<td>Title</td><td th:text="${thema.title}"/>
+		</tr><tr>
+			<td>Content</td><td th:text="${thema.content}"/>
+		</tr><tr th:if="${thema.poster != null}">
+			<td>Poster</td>
+			<td>
+				<img th:if="${thema.img}" th:src="|/up/thema/${thema.poster}|"/>
+				<a th:unless="${thema.img}" th:text="${thema.poster}"
+				   th:href="|/thema/download/${thema.poster}|" ></a>
+			</td>
+		</tr><tr>
+			<td>Type</td><td th:text="${thema.type}"/>
+		</tr><tr>
+			<td>Price</td><td th:text="${thema.price}"/>
+		</tr><tr>
+			<td>People</td><td th:text="${thema.people}"/>
+		</tr><tr>
+			<td>Level</td><td th:text="${thema.level}"/>
+		</tr><tr>
+			<td>PlayTime</td><td th:text="${thema.playTime}"/>
+		</tr><tr>
+			<td>Horror</td><td th:text="${thema.horror}"/>
+		</tr><tr>
+			<td>Activity</td><td th:text="${thema.activity}"/>
+		</tr>
+		
+			
+<!--			<td >
+				<img th:if="${thema.img}" th:src="|/up/${thema.thema}|"/>
+				<a th:unless="${thema.img}" th:text="${thema.thema}"
+				   th:href="|/thema/download/${thema.thema}|" ></a>
+			</td>-->
+		</tr>
+		<tr>
+			<td>내용</td><td th:text="${thema.content}"/>
+		</tr><tr>
+			<td colspan="2" align="right">
+				<a th:href="|/thema/delete/${thema.themaId}|">삭제</a>
+				<a th:href="|/thema/update/${thema.themaId}|">수정</a>
+				<a th:href="|/thema/themaList|">목록으로</a>
+			</td>
+		</tr>
+	</table>
+</body>
+</html>

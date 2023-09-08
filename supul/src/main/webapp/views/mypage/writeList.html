@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>내가 쓴 글목록</title>
+</head>
+<body>
+	<h1>내가 쓴 글목록</h1>
+	<table border="">
+		<h4>내가 쓴 글 리스트</h4>
+		<tr>
+			<td>번호</td>
+			<td>매장명</td>
+			<td>테마명</td>
+			<td>제목</td>
+			<td>작성일</td>		
+		</tr>
+		<tr th:each="post : ${posts}">
+			<td th:text="${post.review_id}"></td>
+			<td th:text="${post.branchName}"></td>
+			<td th:text="${post.themaName}"></td>
+			<td th:text="${post.title}"></td>
+			<td th:text="${post.regDate}"></td>
+		</tr>
+	</table>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>후기</title>
+</head>
+<body>
+    <h1 align="center">후기</h1>
+    <table border="" cellspacing="0" width="90%" align="center">
+        <thead>
+			<!--notice_id/user_id/branch_id/title/content/type/regDate/modiDate/fileName-->
+            <tr>
+                <th>No</th>
+                <th>제목</th>
+                <th>등록일</th>
+                <th>작성자</th>
+                <th>수정</th>
+                <th>삭제</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="board, num : ${rList}">
+                <td th:text="${rList.totalElements - (num.index)}"></td>
+                <!--주소창에 넘버가 -->
+                <td><a th:href="@{/reviewBoardr/detail/{id}(id=${board.no})}" th:text="${board.title}"></a></td>
+                <td th:text="${#temporals.format(board.regDate, 'yyyy-MM-dd HH:mm')}"></td>
+                <td th:text="${board.user_id}"></td>
+                <td>
+					<a th:href="@{/reviewBoardr/modify/{id}(id=${board.no})}"><button value="수정">수정</button></a>
+				</td>
+                <td>
+					<a th:href="@{/reviewBoardr/delete/{id}(id=${board.no})}" onclick="return confirm('삭제하시겠습니까?')" ><button value="삭제">삭제</button></a>
+				</td>                
+            </tr>
+            <!-- 페이징 처리 -->
+			<tr th:if="${rList.totalElements > 0}">
+			    <td colspan="7" class="pagination" align="center">
+			        <span th:if="${currentPage > 0}">
+			            <a th:href="@{/reviewBoardr/list(page=${currentPage - 1})}"> ◀ </a>
+			        </span>
+			        <span th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:class="${currentPage == i} ? 'active'">
+			            <a th:href="@{/reviewBoardr/list(page=${i})}" th:text="${i + 1}"></a>
+			        </span>
+			        <span th:if="${currentPage < totalPages - 1}">
+			            <a th:href="@{/reviewBoardr/list(page=${currentPage + 1})}"> ▶ </a>
+			        </span>
+			    </td>
+			</tr>
+	        
+            <tr>
+				<td colspan="7" align="right">
+					<a th:href="@{/reviewBoardr/write}">
+						<button value="글쓰기">글쓰기</button>
+					</a>
+				</td>
+			</tr>
+        </tbody>
+    </table>
+</body>
+</html>

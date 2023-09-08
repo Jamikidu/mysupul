@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Reservation List</title>
+</head>
+
+<body>
+    <h1>Reservation List</h1>
+    <table>
+        <tr>
+			<th><a th:href="@{/sales/brlist(page=${searchList.number},userName=${userName}, sortBy='rvDate')}">Date</a></th>
+            <th><a th:href="@{/sales/brlist(page=${searchList.number},userName=${userName}, sortBy='userName')}">User Name</a></th>
+            <th><a th:href="@{/sales/brlist(page=${searchList.number},userName=${userName}, sortBy='themaName')}">thema Name</a></th>
+            <th><a th:href="@{/sales/brlist(page=${searchList.number},userName=${userName}, sortBy='time')}">thema Name</a></th>
+            <th><a th:href="@{/sales/brlist(page=${searchList.number},userName=${userName}, sortBy='thema.branch.name')}">thema Name</a></th>
+            <th>Reservation ID</th>
+            <th>User Name</th>
+            <th>Thema Name</th>
+            <th>Time</th>
+            <th>Date</th>
+            <th>People</th>
+            <th>Price</th>
+            <th>Reservation Date</th>
+        </tr>
+  
+      
+        </tr>
+          
+           <tr th:each="rv : ${searchList}">
+			   [[${rv.name}]]
+			   <td th:text="${rv.name}"> </td>
+			   <td th:text="${rv.phone}"> </td>
+			   <td th:text="${rv.address}"> </td>
+			   
+			  
+			   <block th:each="a : ${rv.tm}" > 
+			   <td th:text="${a.title}"> </td>
+			   <td th:text="${a.content}"> </td>
+			   <block th:each="b : ${a.sale}" > 
+					<td th:text="${b.time}"> </td> 
+					<td th:text="${b.date}"> </td> 
+					<td th:text="${b.price}"> </td> 
+					
+					 </block>
+                </block>
+               
+                <!-- 기타 필드 추가 -->
+            </tr>    
+        
+    </table>
+<!-- Add this block for pagination controls -->
+<div th:if="${searchList.totalPages > 1}">
+    <ul class="pagination">
+        <li th:if="${searchList.hasPrevious}" class="page-item">
+             <a th:href="@{/sales/brlist(page=0,userName=${userName},sortBy=${sortBy})}"class="page-link">처음</a>
+        </li>
+        <li th:if="${searchList.hasPrevious}" class="page-item">
+            <a th:href="@{/sales/brlist(page=${searchList.number - 1},userName=${userName},sortBy=${sortBy})}"class="page-link">이전</a>
+        </li>
+        <li th:each="page : ${#numbers.sequence(0, searchList.totalPages - 1)}" class="page-item"
+            th:classappend="${searchList.number == page} ? 'active'">
+            <a th:href="@{/sales/brlist(page=${page},userName=${userName},sortBy=${sortBy})}" class="page-link" th:text="${page + 1}"></a>
+        </li>
+        <li th:if="${searchList.hasNext}" class="page-item">
+             <a th:href="@{/sales/brlist(page=${searchList.number + 1},userName=${userName},sortBy=${sortBy})}" class="page-link">다음</a>
+        </li>
+        <li th:if="${searchList.hasNext}" class="page-item">
+            <a th:href="@{/sales/brlist(page=${searchList.totalPages - 1},userName=${userName},sortBy=${sortBy})}"class="page-link">마지막</a>
+        </li>
+    </ul>
+</div>
+    <form th:action="@{/sales/brlist}" method="get">
+        <input type="text" name="name" placeholder="유저이름검색">
+        <button type="submit">Search</button>
+    </form>
+</body>
+</html>

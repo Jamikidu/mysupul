@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>관리자 - 랭크 등록</title>
+</head>
+<body>
+	<h1>랭크 리스트</h1>
+    <table border="">
+        <tr>
+            <td>지점명 : </td>
+            <td th:text="${rank.spot}"></td>
+        </tr>
+        <tr>
+            <td>테마명 : </td>
+            <td th:text="${rank.thema}"></td>
+        </tr>
+        <tr>
+            <td>날짜 : </td>
+            <td th:text="${rank.date}"></td>
+        </tr>
+        <tr>
+            <td>클리어 시간 : </td>
+            <td th:text="${rank.time}"></td>
+        </tr>
+        <tr>
+            <td>플레이어 : </td>
+            <td th:text="${rank.player}"></td>
+        </tr>
+    </table>
+</body>
+</html>
+</body>
+</html>

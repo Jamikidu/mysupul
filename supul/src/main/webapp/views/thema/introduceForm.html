@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>테마 소개</title>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<style>
+	.box{border: solid #00f 1px;
+		border-radius: 10px;
+		text-decoration: none;
+		padding:5px 10px; 
+		margin: 10px;
+		display: inline-block;
+		}
+</style>
+<script type="text/javascript">
+	function confirmrv() {
+		if (confirm('정말 예약하시겠습니까?')) {
+			// 예약을 수락한 경우, 예약 페이지로 이동
+			return true;
+		} else {
+			// 예약을 취소한 경우, 이동하지 않음
+			return false;
+		}
+	}
+	$(function () {
+	    var urlParams = new URLSearchParams(window.location.search);
+		var dateParam = urlParams.get('date');
+		var currentDate = new Date(); // 현재 날짜를 가져옵니다.
+
+	    // 현재 날짜를 YYYY-MM-DD 형식으로 포맷팅합니다.
+	    var formattedDate = currentDate.toISOString().split('T')[0];
+	    
+		$("#datepicker").datepicker({
+			dateFormat: "yy-mm-dd", // 선택한 날짜 형식
+			closeText: "닫기",
+    		currentText: "오늘",
+			showButtonPanel: true,
+			changeMonth: true,      // 월 선택 가능
+			changeYear: true,       // 연도 선택 가능
+			hideIfNoPrevNext: true ,
+			prevText: 'Earlier',
+			monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+			dayNames: ['일', '월', '화', '수', '목', '금', '토'],
+			dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
+			weekHeader: "주",
+			yearSuffix: '년',
+			minDate: "0",
+			maxDate: "+14D",
+		});
+	});
+</script>
+</head>
+<body>
+	<h1>테마 소개</h1>
+	<table border="">
+		<!--헤더-->
+		<tr>
+			<td width="800" height="200" colspan="4">
+				header
+			</td>
+		</tr>
+		
+		<!--메인 내용-->
+		<tr>
+			<td colspan="4">
+				<form id="spotForm" method="get">
+					<span>지점 선택 : </span>
+					<label>
+						<select name="name" id="spot">
+							<option value="전체">전체</option>
+							<option th:each="spot : ${brnList}" th:value="${spot.branchId}" th:text="${spot.name}"></option>
+						</select>
+					</label>
+				
+					<span>예약날짜 : </span>
+					<label>
+						<form name=date1 action="?">
+							<p>
+								<input type="text" name="date" id="datepicker" onchange="submit();" class="date" th:value="${date}"
+									width="150px" readonly="readonly" />
+							</p>
+						</form>
+					</label>
+				</form>
+			</td>
+		</tr>
+			
+		<!--테마 시작-->
+		<tr th:each="thema : ${themaList}" class="thema" th:attr="branchId=${thema.branch.branchId}" >
+			<td>
+				<figure th:if="${thema.poster != null}">
+					<img th:src="@{/up/thema/{filename}(filename=${thema.poster})}" alt="테스트사진위치" />
+				</figure>
+			</td>
+		
+			<td th:each="brn : ${brnList}" th:if="${brn.branchId} == ${thema.branch.branchId}" >
+				<h2 th:text="|[${brn.name}] ${thema.title}|"></h2>
+				<form action="" th:object="${rv}">
+				<table>
+				
+					<tr>
+						<th>장르</th>
+						<td th:text="${thema.type}"></td>
+					</tr>
+					<tr>
+						<th>인원</th>
+						<td th:text="${thema.people}"></td>
+					</tr>
+					<tr>
+						<th>소요 시간</th>
+						<td th:text="${thema.playTime}"></td>
+					</tr>
+					<tr>
+						<th>난이도</th>
+						<td th:text="${thema.level}"></td>
+					</tr>
+					<tr>
+						<th>활동성</th>
+						<td th:text="${thema.activity}"></td>
+					</tr>
+					<tr>
+						<th>공포도</th>
+						<td th:text="${thema.horror}"></td>
+					</tr>
+					<tr>
+						<th>설명</th>
+						<td th:text="${thema.content}"></td>
+					</tr>
+					
+				</table>
+		<div class="time">
+		<block th:each="rd, rdStat : ${thema.timetable}">
+			<span th:if="${thema.availabletime(rd, date)}">
+				<block th:unless="${#lists.contains(reserveExist, #temporals.format(rd, 'HH:mm'))}">
+					<a th:href="@{/thema/reservation/OK(picktime=${rd},date=${date})}" class="box" onclick="return confirmrv();">
+						<span th:text="${#temporals.format(rd, 'HH:mm')}" />
+					</a>
+				</block>
+				<block  th:if="${#lists.contains(reserveExist, #temporals.format(rd, 'HH:mm'))}">
+					<span th:text="${#temporals.format(rd, 'HH:mm')}+ '(예약불가)'" class="box"></span>
+				</block>
+			</span>
+			
+			<block th:unless="${thema.availabletime(rd, date)}">
+				<span th:text="${#temporals.format(rd, 'HH:mm')}+ '(예약불가)'" class="box"></span>
+			</block>
+	
+		</block>
+	</div>
+		</form>
+		
+
+			</td>
+		</tr>
+
+		<!--푸터-->
+		<tr>
+			<td height="200" colspan="4">
+				footer
+			</td>
+		</tr>
+		
+	</table>
+	
+	<script>
+        // select 요소 변경 시 호출되는 함수
+        document.getElementById('spot').addEventListener('change', function () {
+            var selectedBranchId = this.value;
+    
+            // 모든 테마 행 숨기기
+            var themaRows = document.querySelectorAll('.thema');
+            themaRows.forEach(function (row) {
+                row.style.display = 'none';
+            });
+    
+            // 선택한 branchId와 일치하는 테마 행 보이기
+            if (selectedBranchId === '전체') {
+                themaRows.forEach(function (row) {
+                    row.style.display = 'table-row';
+                });
+            } else {
+                var matchingRows = document.querySelectorAll('.thema[branchId="' + selectedBranchId + '"]');
+                matchingRows.forEach(function (row) {
+                    row.style.display = 'table-row';
+                });
+            }
+        });
+    </script>
+</body>
+</html>

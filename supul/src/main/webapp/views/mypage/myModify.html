@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>내 정보 수정</title>
+</head>
+<body>
+	<h1>내 정보 수정</h1>
+	<table border="">
+		<!--헤더-->
+		<tr>
+			<td width="800" height="200" colspan="4">
+				header
+			</td>
+		</tr>
+		
+		<!--메인-->
+		<tr>
+			<!--제목 메뉴바-->
+			<td width="200px">
+				<h3>마이 페이지</h3>
+			</td>
+			<td>
+				<span>쿠폰</span>
+				<label >2개</label>
+			</td>
+		</tr>
+		<tr>
+			<!--사이드 메뉴-->
+			<td>
+				<th:block th:replace="inc/mypageMenu" />
+			</td>
+			<td>
+				<form th:object="${userData}" method="post" th:action="@{/mypage/modify}">
+					<table>
+						<tr>
+							<td>아이디</td>
+							<td><input type="text" id="id" th:value="${userData.userId}" readonly></td>
+						</tr>
+						<tr>
+							<td>비밀번호</td>
+							<td><input type="password" id="password" th:field="*{userData.userPw}"></td>
+						</tr>
+						<tr>
+							<td>이름</td>
+							<td><input type="text" id="user_name" th:value="${userData.userName}"></td>
+						</tr>
+						<tr>
+							<td>생년월일</td>
+							<td><input type="text" id="birth" th:value="${userData.birth}"></td>
+						</tr>
+						<tr>
+							<td>이메일</td>
+							<td><input type="text" id="email" th:value="${userData.email}"></td>
+						</tr>
+						<tr>
+							<td>연락처</td>
+							<td><input type="text" id="phone" th:value="${userData.phone}"></td>
+						</tr>
+						<tr>
+							<td>주소</td>
+							<td><input type="text" id="email" th:value="${userData.email}"></td>
+						</tr>
+						<tr>
+							<td><button type="submit">수정하기</button></td>
+						</tr>
+					</table>
+				</form>
+			</td>
+		</tr>
+		
+		<!--푸터-->
+		<tr>
+			<td height="200" colspan="4">
+				footer
+			</td>
+		</tr>
+	</table>
+</body>
+</html>

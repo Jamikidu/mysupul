@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>문의게시판 작성</title>
+</head>
+<body>
+    <h1>문의게시판 작성</h1>
+    <!--notice_id/user_id/branch_id/title/content/type/regDate/modiDate/fileName
+    user_id, branch_id, title, content, type, regDate, modiDate, fileName-->
+    <form th:action="@{/qnaBoard/write}" method="post">
+	    <table border="">
+	        <tr>
+	            <td>구분</td>
+	            <td>            
+				    <select name="type" id="type">
+				        <option value="예약문의">예약문의</option>
+				        <option value="취소문의">취소문의</option>
+				    </select>
+				</td>
+	        </tr>
+	        <tr>
+	            <td>제목</td>
+	            <td><input type="text" id="title" name="title"></td>
+	        </tr>
+	        <tr>
+	            <td>내용</td>
+	            <td><textarea id="content" name="content" ></textarea></td>
+	        </tr>
+	        <tr>
+	            <td colspan="2" align="right">
+	                <button type="submit">작성</button>
+	                <a th:href="@{/qnaBoard/list}"><button value="목록">목록</button></a>
+	            </td>
+	        </tr>
+	    </table>
+	</form>
+</body>
+</html>

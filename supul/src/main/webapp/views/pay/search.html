@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Result</title>
+</head>
+<body>
+    <h1>Search Result</h1>
+    
+    
+       <form action="search" method="GET">
+        <!-- 사용자 이름 입력 -->
+        <label for="userName">User Name:</label>
+        <input type="text" id="userName" name="userName">
+        <br>
+        
+        <!-- 테마 이름 입력 -->
+        <label for="themaName">Thema Name:</label>
+        <input type="text" id="themaName" name="themaName">
+        <br>
+        
+      
+        
+        <!-- 결제 상태 선택 -->
+        <label for="paid">Paid:</label>
+        <input type="checkbox" id="paid" name="paid" value="true">
+        <br>
+        
+        <!-- 노쇼 상태 선택 -->
+        <label for="noShow">No Show:</label>
+        <input type="checkbox" id="noShow" name="noShow" value="true">
+        <br>
+
+        <button type="submit">Search</button>
+    </form>
+    
+    <!-- 검색 결과를 테이블로 표시 -->
+    <table>
+        <thead>
+            <tr>
+                <th>User Name</th>
+                <th>Thema Name</th>
+                <th>Reservation Date</th>
+                <th>Paid</th>
+                <th>No Show</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- 검색 결과를 반복하며 행으로 출력 -->
+            <tr th:each="reservation : ${searchResult.content}">
+                <td th:text="${reservation.userName}"></td>
+                <td th:text="${reservation.themaName}"></td>
+                
+                <td th:text="${reservation.paid ? 'Yes' : 'No'}"></td>
+                <td th:text="${reservation.noShow ? 'Yes' : 'No'}"></td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <!-- 페이징 처리를 출력 (Thymeleaf에서 제공하는 페이징) -->
+ 
+</body>
+</html>

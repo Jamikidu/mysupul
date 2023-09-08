@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>문의게시판 상세페이지</title>
+<!-- 수정 및 저장 스크립트 -->
+<script th:inline="javascript">
+    /* 수정 버튼 클릭 시 */
+    function editComment(commentId) {
+        var contentElement = document.getElementById('content_' + commentId);
+        var editButton = document.getElementById('edit_button_' + commentId);
+        var saveButton = document.getElementById('save_button_' + commentId);
+
+        var originalContent = contentElement.innerText.trim();
+        var inputElement = document.createElement('input');
+        inputElement.value = originalContent;
+        contentElement.innerHTML = '';
+        contentElement.appendChild(inputElement);
+
+        editButton.style.display = 'none';
+        saveButton.style.display = 'inline-block';
+    }
+
+    /* 저장 버튼 클릭 시 */
+    function saveComment(commentId) {
+        var contentElement = document.getElementById('content_' + commentId);
+        var editButton = document.getElementById('edit_button_' + commentId);
+        var saveButton = document.getElementById('save_button_' + commentId);
+
+        var inputElement = contentElement.querySelector('input');
+        var updatedContent = inputElement.value.trim();
+        if (updatedContent !== '') {
+            contentElement.innerText = updatedContent;
+            editButton.style.display = 'inline-block';
+            saveButton.style.display = 'none';
+        } else {
+            alert('내용을 입력하세요.');
+        }
+    }
+</script>
+</head>
+<body>
+    <h2>문의게시판 상세페이지</h2>
+    <h2 th:text="${qDetail.title}"></h2>
+    <table border="" cellspacing="" style="border-collapse: collapse;">
+        <tr>
+            <td>제목</td>
+            <td th:text="${qDetail.title}"></td>
+        </tr>
+        <tr>
+            <td>작성자</td>
+            <td><span th:text="${qDetail.user_id}"></span></td>
+        </tr>
+        <tr>
+            <td>매장번호</td>
+            <td><span th:text="${qDetail.branch_id}"></span></td>
+        </tr>
+        <tr>
+            <td>작성일</td>
+            <td><span th:text="${#temporals.format(qDetail.regDate, 'yyyy-MM-dd HH:mm')}"></span></td>
+        </tr>
+        <tr th:if="${qDetail.modiDate != null}">
+		    <td>수정일</td>
+		    <td><span th:text="${#temporals.format(qDetail.modiDate, 'yyyy-MM-dd HH:mm')}"></span></td>
+		</tr>
+        <tr>
+		    <td>구분</td>
+		    <td>
+		        <span th:text="${qDetail.type}"></span>
+		    </td>
+		</tr>
+        <tr>
+            <td>내용</td>
+            <td th:text="${qDetail.content}"></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <a th:href="@{/qnaBoard/modify/{id}(id=${qDetail.no})}"><button value="수정">수정</button></a>
+                <a th:href="@{/qnaBoard/delete/{id}(id=${qDetail.no})}" onclick="return confirm('삭제하시겠습니까?')"><button value="삭제">삭제</button></a>
+                <a th:href="@{/qnaBoard/list}"><button value="목록">목록</button></a>      
+            </td>      
+        </tr>
+	</table>
+	<table border="" style="border-collapse: collapse;">
+		<tr>
+			<td colspan="3">
+				<h4>답글</h4>		
+			</td>
+		</tr>
+		<tr>
+			<td colspan="3">
+				<form th:action="@{/qnaBoard/addQComment/{id}(id=${qDetail.no})}" method="post">
+				    <table border="0">
+				        <tr><td><input type="text" name="branch_id" id="branch_id" placeholder="매장 번호 입력"/></td></tr>
+				        <tr><td><input type="text" name="content" placeholder="답글 입력"/></td></tr>
+				        <tr><td><input type="text" name="admin_id" placeholder="관리자 ID 입력"/></td></tr>
+				        <tr><td><button type="submit">답글 등록</button></td></tr>
+				    </table>
+				</form>				
+			</td>
+		</tr>
+	</table>
+	<table border="" style="border-collapse: collapse;">
+	    <tr th:each="comment : ${qDetail.commentq}">
+	        <table border="" style="border-collapse: collapse;">
+	            <tr>
+	                <td><p th:text="${comment.branch_id}"></p></td>
+	                <td><p th:text="${comment.admin_id}"></p></td>
+	            </tr>
+	            <tr>
+					<td colspan="2">						
+	                    <span th:text="${comment.content}"
+	                          th:data-comment-id="${comment.no}"
+	                          th:id="'content_' + ${comment.no}">
+	                    </span>
+					</td>
+				</tr>
+	            <tr>
+	                <td colspan="2">
+	                    
+	                    <button th:id="'edit_button_' + ${comment.no}"
+	                            th:data-comment-id="${comment.no}"
+	                            th:onclick="'editComment(' + ${comment.no} + ')'"
+	                            th:text="'수정'">
+	                    </button>
+	                    <button th:id="'save_button_' + ${comment.no}"
+	                            th:data-comment-id="${comment.no}"
+	                            th:onclick="'saveComment(' + ${comment.no} + ')'"
+	                            style="display:none;"
+	                            th:text="'저장'">
+	                    </button>
+	                    <a th:href="@{/qnaBoard/commDelete/{id}(id=${comment.no},qid=${qDetail.no})}" 
+	                       onclick="return confirm('삭제하시겠습니까?')">
+	                        <button th:text="'삭제'"></button>
+	                    </a>
+	                </td>
+	            </tr>
+	        </table>
+	    </tr>
+	</table>	
+</body>
+</html>

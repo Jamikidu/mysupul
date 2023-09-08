@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>지점 추가</title>
+</head>
+<body>
+    <h1>지점 추가</h1>
+    <form th:action="@{/store_add}" method="post" th:object="${button}">
+        <label for="name">지점명:</label>
+        <input type="text" id="name" name="name" th:field="*{name}"><br/>
+        <label for="location">위치:</label>
+        <input type="text" id="location" name="location" th:field="*{location}"><br/>
+        <button type="submit">추가</button>
+    </form>
+</body>
+</html>

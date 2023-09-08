@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>메인 페이지</title>
+<style>
+        ul.navbar {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #333;}
+        
+        li.nav-item {
+            float: left;} 
+        li.nav-item a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;}
+        li.nav-item a:hover {
+            background-color: #ddd;
+            color: black;}
+        img.logo {
+        width: 100px;
+        height: auto;
+        vertical-align: middle;
+        margin-right: 10px;}
+    </style>
+</head>
+<body>
+	<header>
+		<nav>
+			<ul class="navbar">
+				<li class="nav-item">
+                    <img class="logo" src="/img/파이리.jpg" alt="로고">
+                </li>
+		        <li class="nav-item">
+		            <a href="#">홈</a>
+		        </li>
+		        <li class="nav-item">
+		            <a href="#">집에</a>
+		        </li>
+		        <li class="nav-item">
+		            <a href="#">가서</a>
+		        </li>
+		        <li class="nav-item">
+		            <a href="#">자고싶다</a>
+		        </li>
+		    </ul>
+		</nav>
+	</header>
+	<section>
+		<h2>내가 섹션1이다</h2>
+	</section>
+		
+	
+	<section>
+		<h2>내가 섹션2다</h2>
+	</section>
+	
+	<footer>
+	<h2>내가 뿌터다</h2>
+		<a href="admin/adminsignup">이몸이 관리자 회원가입이다.</a><br>
+		<a href="admin/adminlogin">이몸이 관리자 로그인이다.</a><br>
+		<a href="admin/adminmembers">이몸이 회원 정보다.</a><br>
+	</footer>
+	<form method="post" action="/logout">
+        <button type="submit">로그아웃</button>
+    </form>
+</body>
+</body>
+</html>
+</body>
+</html>

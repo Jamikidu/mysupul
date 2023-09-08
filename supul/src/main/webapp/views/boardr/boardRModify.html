@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>후기 수정</title>
+<style>
+	*{margin: 0; padding: 0; box-sizing: border-box;}
+	h1{text-align: center; margin: 30px auto;}
+	table{margin: 0 auto;}
+	input{width: 100%;}
+	textarea{width: 700px; height: 500px; resize: none;}
+	button{padding: 5px 15px;}
+</style>
+</head>
+<body>
+    <h1>후기 수정</h1>    
+    <form th:action="@{/boardr/rmodify/{id}(id=${rModify.no})}" method="post" enctype="multipart/form-data">
+		<table border="" cellspacing="">
+			<tr>
+				<th><label for="title">제목</label></th>
+				<td><input type="text" name="title" th:value="${rModify.title}" /></td>       
+	        </tr>
+			<tr>
+				<th><label for="user_id">작성자</label></th>
+				<td><input type="text" name="user_id" th:value="${rModify.user_id}" /></td>
+			</tr>
+			<tr>
+	            <td>매장번호</td>
+	            <td><span th:text="${rModify.branch_id}"></span></td>
+	        </tr>
+			<tr>
+            	<td>작성일</td>
+            	<td><span th:text="${#temporals.format(rModify.regDate, 'yyyy-MM-dd HH:mm')}"></span></td>
+        	</tr>
+	        <tr>
+	            <td>수정일</td>
+	            <td><span th:text="${#temporals.format(rModify.modiDate, 'yyyy-MM-dd HH:mm')}"></span></td>
+	        </tr>
+			<tr>
+			    <th><label for="file">파일</label></th>
+			    <td>
+			        <input type="file" name="file" />
+			        <span th:if="${rModify.fileName != null}" th:text="${rModify.fileName}"></span>
+			    </td>
+			</tr>
+			
+			<tr>
+			    <th><label for="content">내용</label></th>
+			    <td><textarea id="content" name="content" th:text="${rModify.content}"></textarea></td>
+			</tr>
+			<tr>
+			    <th colspan="2" align="right">
+			        <button type="submit">수정</button>						  
+			        <a th:href="@{/boardr/rdelete/{id}(id=${rModify.no})}" onclick="return confirm('삭제하시겠습니까?')" ><button value="삭제">삭제</button></a>
+			        <a th:href="@{/boardr/rList}"><button value="목록">목록</button></a>
+			    </th>      		 
+			</tr>
+        </table>
+    </form>
+    
+</body>
+</html>

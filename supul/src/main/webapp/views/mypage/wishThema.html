@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>테마 찜목록</title>
+</head>
+<body>
+	<h1>테마 찜목록</h1>
+	<table border="">
+		<!--헤더-->
+		<tr>
+			<td width="800" height="200" colspan="4">
+				header
+			</td>
+		</tr>
+		
+		<!--메인-->
+		<tr>
+			<!--제목 메뉴바-->
+			<td width="200px">
+				<h3>마이 페이지</h3>
+			</td>
+			<td>
+				<span>쿠폰</span>
+				<label >2개</label>
+			</td>
+		</tr>
+		<tr>
+			<!--사이드 메뉴-->
+			<td>
+				<th:block th:replace="inc/mypageMenu"/>
+			</td>
+			<td>
+				<h4>테마 찜목록</h4>
+				<!--<div>
+					<ul>
+						<li th:each="thema : ${user.wish_thema}">
+						    <div style="width: 100px; height: 150px; border: 1px solid black;" th:if="${thema.upfile == thema.upfile}">
+						        <img th:src="@{/image/{filename}(filename=${thema.upfile})}" alt="방탈출 포스터" />
+						    </div>
+						    <h3 th:text="${thema.title}">방탈출 이름</h3>
+						    <p th:text="${thema.content}">방탈출 내용</p>
+						    <p th:text="${thema.content}">방탈출 내용</p>
+						</li>
+					</ul>
+				</div>-->
+			</td>
+		</tr>
+		
+		<!--푸터-->
+		<tr>
+			<td height="200" colspan="4">
+				footer
+			</td>
+		</tr>
+	</table>
+</body>
+</html>

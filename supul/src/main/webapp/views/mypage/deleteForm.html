@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>삭제 확인</title>
+</head>
+<body>
+    <h1>삭제 확인</h1>
+    <!-- rankData 객체를 지정 -->
+    <form th:action="@{/mypage/delete/{id}(id=${rankData.rankId})}" method="post">
+        <!-- 나머지 내용 -->
+        <p>Delete confirmation for ID: <span th:text="${rankData.rankId}"></span></p>
+        <input type="submit" value="Delete">
+    </form>
+</body>
+</html>

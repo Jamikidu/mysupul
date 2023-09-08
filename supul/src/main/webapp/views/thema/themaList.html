@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <title>Thema List</title>
+</head>
+<body>
+    <h1>Thema List</h1>
+    
+    <table border="">
+		<thead>
+	        <tr>
+				<th>번호</th>
+	            <th>테마 ID</th>
+	            <th>지점 ID</th>	            
+	            <th>타이틀</th>
+	            <th>내용</th>				
+<!--	            <th>포스터</th>				
+	            <th>장르</th>
+	            <th>가격</th>
+	            <th>인원수</th>
+	            <th>난이도</th>
+	            <th>이용시간</th>
+	            <th>공포도</th>
+	            <th>활동성</th>
+	            <th>찜</th>
+	            <th>예약가능시간</th>-->
+	        </tr>
+        </thead>
+        <tbody>
+	        <tr th:each="thema, stat : ${themas}">
+				<td th:text="${stat.index + 1}"></td>
+	            <td th:text="${thema.themaId}"></td>
+	           
+	            <td>
+					<a th:href="|/thema/detail/${thema.themaId}|" th:text="${thema.title}"></a>
+				</td>
+	            <td th:text="${thema.content}"></td>
+<!--	            <td th:text="${thema.poster}"></td>
+	            <td th:text="${thema.type}"></td>
+	            <td th:text="${thema.price + '원'}"></td>
+	            <td th:text="${thema.people}"></td>
+	            <td th:text="${thema.level}"></td>
+	            <td th:text="${thema.playTime}"></td>
+	            <td th:text="${thema.horror}"></td>
+	            <td th:text="${thema.activity}"></td>
+	            <td th:text="${thema.wishList}"></td>
+	            <td th:text="${thema.rv_time}"></td>-->
+<!--	            <td>
+                     수정 버튼 
+                    <a th:href="@{'/thema/update/' + ${thema.thema_id}}">수정</a>
+                    
+                     삭제 버튼 
+                    <a th:href="@{'/thema/delete/' + ${thema.thema_id}}">삭제</a>
+                </td>-->
+	        </tr>
+        </tbody>
+    </table>
+	<a th:href="@{/thema/form}">테마 등록</a>
+
+</body>
+</html>

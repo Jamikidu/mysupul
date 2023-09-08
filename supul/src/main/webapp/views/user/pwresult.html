@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>비밀번호 찾기 결과</title>
+</head>
+<body>
+    <h2>비밀번호 찾기 결과</h2>
+    <div th:if="${foundPw}">
+        <p>찾은 비밀번호: <span th:text="${foundPw}"></span></p>
+    </div>
+    <div th:if="${error}">
+        <p th:text="${error}"></p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>관리자 - 랭크 등록</title>
+</head>
+<body>
+	<h1>랭크 등록</h1>
+	<form method="post" th:object="${ranking}">
+		<table border="">
+			<tr>
+			    <td>지점명 : </td>
+			    <td><input type="text" th:field="*{branchName}" /></td>
+			</tr>
+			<tr>
+			    <td>테마명 : </td>
+			    <td><input type="text" th:field="*{thema}" /></td>
+			</tr>
+			<tr>
+			    <td>날짜 : </td>
+			    <td><input type="date" th:field="*{date}" /></td>
+			</tr>
+			<tr>
+			    <td>클리어 시간 : </td>
+			    <td><input type="time" th:field="*{time}" /></td>
+			</tr>
+			<tr>
+			    <td>플레이어 : </td>
+			    <td><input type="text" th:field="*{player}" /></td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<input type="submit" value="등록" />
+				</td>
+			</tr>
+		</table>
+	</form>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <title>Branch List</title>
+</head>
+<body>
+	<h1>지점 목록</h1>
+	
+    <table border="">
+        <thead>
+            <tr>
+				<th>no</th>
+                <th>이름</th>
+                <th>주소</th>
+                <th>전화번호</th>
+                <th>작업</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="branch, stat : ${list}">
+				<td th:text="${stat.count}"></td> <!-- stat.index + 1로 순차적인 번호 출력 -->
+                <td th:text="${branch.name}"></td>
+                <td th:text="${branch.address}"></td>
+                <td th:text="${branch.phone}"></td>
+                <td>
+                    <!-- 수정 버튼 -->
+                    <a th:href="|/branch/update/${branch.branchId}|">수정</a>
+                    
+                    <!-- 삭제 버튼 -->
+                    <a th:href="@{'/branch/delete/' + ${branch.branchId}}">삭제</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <a th:href="@{/branch/form}">지점 등록</a>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>랭크 리스트</title>
+</head>
+<body>
+	<h1>랭크 리스트</h1>
+	<table border="">
+		<tr>
+			<td>번호</td>
+			<td>날짜</td>
+			<td>지점명</td>
+			<td>테마명</td>
+			<td>아이디</td>
+			<td>클리어 시간</td>
+			<td>인원수</td>
+		</tr>
+		<tr th:each="rd, num : ${rankList}">
+    		<td th:text="${num.count}" /> 
+		    <td th:text="${rd.date}" />
+			
+			<td th:text="${rd.branchName}"/>
+		    <td th:text="${rd.tdTitle}" />
+		    
+				
+		    <td th:text="${rd.userId}"/>
+		    <td th:text="|${rd.minute}분 ${rd.seconds}초|"/>
+		    <td th:text="${rd.people}"/>
+		    <td>
+			    <a th:href="|/mypage/delete/${rd.rankId}|" onclick="return confirm('삭제하시겠습니까?');">삭제</a>
+			</td>
+		</tr>
+		
+		<tr>
+			<td colspan="7" align="right">
+				<a th:href="|/mypage/insert|">글쓰기</a>
+			</td>
+		</tr>
+	</table>
+</body>
+</html>

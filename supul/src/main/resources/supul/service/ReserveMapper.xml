@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org/DTD Mapper3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="supul.service.ReserveMapper">	<!-- Mapper.java의 이름을 가져오면됨 -->
+	
+	<!-- 예약하기 -->
+	<insert id="reserve" parameterType="rvDTO" >
+		insert into reservation (rv_id, date, time, rv_people, rv_price, userName, themeName, rv_date)
+		values
+		(#{rv_id}, #{date}, #{time}, #{rv_people}, #{rv_price}, #{userName}, #{themeName}, #{rv_date})
+	</insert>
+	
+	<!-- 모든 예약 보기 -->
+	<select id="allreserve" resultType="rvDTO">
+		select * from reservation
+	</select>
+	
+	<!-- 오늘 날짜의 예약 보기 -->
+	<select id="todayreserve" resultType="rvDTO" parameterType="java.time.LocalDate">
+		select * from reservation where date = #{today}
+	</select>
+	
+	<!-- 예약 취소 하기 -->
+	<delete id="canclereserve" parameterType="rvDTO">
+		delete from reservation where rv_id = #{rv_id} and userName = #{userName}
+	</delete>
+	
+	<!-- 예약자 확인 -->
+	<select id="confirmreserve" resultType="rvDTO" parameterType="rvDTO">
+		select * from reservation where rv_id = #{rv_id} and userName = #{userName}
+	</select>
+	
+	<!-- 예약 존재여부 확인 -->
+	<select id="chkrvstatus" resultType="String" parameterType="java.time.LocalDate">
+	    <!-- 현재 달력에 있는 date의 값의 db의 시간들을 다 가져와서 결과값을 String으로 받고 그 결과값을 ArrayList에 넣어줌 -->
+		select date_format(time,'%H:%i') from reservation where date = #{date}
+	</select>
+		<!-- 예약 존재여부 확인 -->
+	
+	
+	<!-- 예약번호 중복확인 -->
+	<select id="chkrvnum" resultType="Integer" parameterType="String">
+		select count(*) from reservation where rv_id = #{rv_id}
+	</select>
+	
+	<select id="timelist" parameterType="int" resultType="java.time.LocalTime">
+    SELECT time_slot
+    FROM timetable_times
+    WHERE timetable_id = #{timetableId}
+</select>
+	
+	
+	
+	<!-- 예약 존재여부 확인
+	<select id="chkrvstatus" resultType="Integer" parameterType="themeDTO">
+		select count(*) from reservation where date = #{date} and time in
+		<foreach collection="timeslot" item="time" open="(" separator=","
+			close=")">
+			#{time}
+		</foreach>
+	</select> -->
+	
+<!-- 	<select id="findDate" resultType="Integer" parameterType="themeDTO">
+		select * from reservation where rvdate = #{date} and rvtime = #{realt}
+	</select> -->
+	
+<!-- 	<select id="countList" resultType="Integer">
+		select count(*) from board
+	</select>
+	
+	<select id="maxId" resultType="Integer">
+		select max(id) from board
+	</select>
+	
+	<select id="list" resultType="bDTO" parameterType="mPD">
+		select * from board order by gid desc , seq limit ?, ?
+		select * from board order by gid desc , seq limit #{start}, #{limit}
+	</select>
+	
+	<select id="detail" resultType="bDTO" parameterType="Integer">
+		select * from board where id = #{id}
+	</select>
+	
+	<insert id="insseerr" parameterType="bDTO"  >
+		insert into board (title, pname, pw, content, upfile, reg_date, cnt, seq, lev, gid, id)
+		values
+		(#{title},#{pname},#{pw},#{content},#{upfile}, sysdate(),0,0,0, #{id}, #{id})
+	</insert>
+	
+	<delete id="delettt" parameterType="bDTO">
+		delete from board where id = #{id} and pw = #{pw}
+	</delete>
+	
+	<update id="modifffy" parameterType="bDTO">
+		update board set 
+		pname = #{pname}, content = #{content}, title = #{title}, upfile = #{upfile} 
+		where id = #{id} and pw = #{pw}
+	</update>
+	
+	조회수증가해보기
+	<update id="cntuuup" parameterType="bDTO">
+		update board set cnt = #{cnt} +1 where id = #{id}
+	</update>
+	
+	<update id="fileDelete" parameterType="bDTO">
+		update board set upfile = null where id = #{id} and pw = #{pw}
+	</update>
+	
+	<select id="idPwChk" parameterType="bDTO" resultType="Integer">
+		select count(*) from board where id = #{id} and pw= #{pw}
+	</select> -->
+
+</mapper>

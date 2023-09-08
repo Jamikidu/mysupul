@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>내 예약 정보</title>
+<script>
+function confirmcancle() {
+    if (confirm('정말 취소하시겠습니까?')) {
+
+        return true;
+    } else {
+
+        return false;
+    }
+}
+</script>
+</head>
+<body>
+<h1>예약 정보 확인</h1>
+
+	<table border="">
+		<tr>
+			<td>예약번호</td>
+			<td th:text="${rvData.rv_id}" />
+		</tr>
+		<tr>
+			<td>예약자</td>
+			<td th:text="${rvData.userName}" />
+		</tr>
+		<tr>
+			<td>예약인원</td>
+			<td th:text="${rvData.rv_people}" />
+		</tr>
+		<tr>
+			<td>예약한 시간</td>
+			<td>
+				<span th:text="${rvData.date}+' '" />
+				<span th:text="${rvData.time}" />
+			</td>
+		</tr>
+		<tr>
+			<td>테마제목</td>
+			<td th:text="${rvData.themeName}" />
+		</tr>
+		<tr>
+			<td>예약하신날짜</td>
+			<td th:text="${rvData.rv_date}" />
+		</tr>
+		<tr>
+			<td colspan="2">
+				<a th:href="|/canclereservation?rv_id=${rvData.rv_id}&userName=${rvData.userName}|" th:text="예약취소"
+					onclick="return confirmcancle()"></a>
+			</td>
+		</tr>
+	</table>
+</body>
+</html>

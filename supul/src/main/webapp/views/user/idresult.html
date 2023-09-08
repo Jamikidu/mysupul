@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>아이디 찾기 결과</title>
+</head>
+<body>
+    <h2>아이디 찾기 결과</h2>
+    <div th:if="${foundId}">
+        <p>당신의 아이디는: <span th:text="${foundId}"></span> 입니다.</p>
+    </div>
+    <div th:if="${error}">
+        <p th:text="${error}"></p>
+    </div>
+</body>
+</html>

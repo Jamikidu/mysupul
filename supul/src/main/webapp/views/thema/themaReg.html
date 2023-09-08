@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <title>Thema 등록</title>
+</head>
+<body>	
+<h1>테마 등록</h1>
+
+    <form th:action="@{/thema/add}"  method="post" enctype="multipart/form-data" th:object="${thema}">
+        <table border="">
+        <tr>
+			<td>Branch_id</td>        
+        	<td>			
+				<input type="text" th:field="*{branch}" required="required" />
+			</td>
+ 		</tr>
+        <tr>
+			<td>Title</td>        
+        	<td><input type="text" th:field="*{title}" required="required" /></td>
+ 		</tr>
+        <tr>
+			<td>Content</td>        
+        	<td><input type="text" th:field="*{content}" /></td>
+ 		</tr>
+        <tr>
+			<td>Poster</td>        
+        	<td>
+				<th:block th:if="${thema.poster != null}">
+					
+				<input type="text" th:field="*{poster}" readonly/>
+				<input  type="button" onclick="fileDelete()" value="파일삭제"/>
+				</th:block>
+				<input th:if="${thema.poster == null}" type="file" th:field="*{mmff}"/>
+			</td>
+ 		</tr>
+        <tr>
+			<td>Type</td>        
+        	<td><input type="text" th:field="*{type}" /></td>
+ 		</tr>
+        <tr>
+			<td>Price</td>        
+        	<td><input type="text" th:field="*{price}" required="required" /></td>
+ 		</tr>
+        <tr>
+			<td>People</td>        
+        	<td><input type="text" th:field="*{people}" /></td>
+ 		</tr>
+        <tr>
+			<td>Level</td>        
+        	<td><input type="text" th:field="*{level}" /></td>
+ 		</tr>
+        <tr>
+			<td>PlayTime</td>        
+        	<td><input type="text" th:field="*{playTime}" /></td>
+ 		</tr>
+        <tr>
+			<td>Horror</td>        
+        	<td><input type="text" th:field="*{horror}" /></td>
+ 		</tr>
+        <tr>
+			<td>Activity</td>        
+        	<td><input type="text" th:field="*{activity}" /></td>
+ 		</tr>
+    
+			
+		<tr>
+			<td colspan="2" align="center">
+				<button type="submit">등록</button>
+				<a th:href="@{/thema/themaList}">목록으로</a>
+			</td>
+		</tr>
+		
+	</table>
+    </form>
+
+</body>
+</html>

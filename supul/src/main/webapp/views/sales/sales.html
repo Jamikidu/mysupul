@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<script>
+
+		document.addEventListener('DOMContentLoaded', function () {
+			var calendarEl = document.getElementById('calendar');
+			var calendar = new FullCalendar.Calendar(calendarEl, {
+				initialView: 'dayGridMonth',
+				selectable: true, // 날짜 선택 활성화
+				height: '500px', 
+				contentHeight: 'auto' ,
+				contentWidth: '100px',
+				select: function (info) {
+					// 선택한 날짜 정보(info)를 처리하는 코드 추가
+					var startDate = info.startStr;
+					var endDate = info.endStr; // 선택한 날짜를 가져옴
+					
+				}
+			});
+			calendar.render();
+		});
+
+	</script>
+
+</head>
+
+<body>
+	<h1>통뎨화!!</h1>
+	 <form action="/sales/chart/1" method="GET">
+        <label for="startDate">Start Date:</label>
+        <input type="date" id="startDate" name="startDate" required>
+        
+        <label for="endDate">End Date:</label>
+        <input type="date" id="endDate" name="endDate" required>
+        
+        <button type="submit">날짜변경</button>
+    </form>
+	<h1>[[${salesData}]]</h1>
+	 <form th:action="@{/sales/chart/{branchName}}" method="get">
+        <label for="branchName">Branch:</label>
+        <select id="branchName" name="branchName">
+            <option value="branch1">Branch 1</option>
+            <option value="branch2">Branch 2</option>
+            <!-- Add more branch options as needed -->
+        </select>
+        
+        <label for="startDate">Start Date:</label>
+        <input type="date" id="startDate" name="startDate" required>
+        
+        <label for="endDate">End Date:</label>
+        <input type="date" id="endDate" name="endDate" required>
+        
+        <button type="submit">Show Data</button>
+    </form>
+	
+	<!--<div id='calendar'></div>-->
+	<table>
+		<h1>날짜별 총액3</h1></td></tr>
+		<tr th:each="data : ${thema_price}">
+			<td th:text="테마이름"></td>
+			<td th:text="${data[0]}"></td>
+			<td th:text="총가격"></td>
+			<td th:text="${data[1]}"></td>
+			<td th:text="최대이용자"></td>
+			<td th:text="${data[2]}"></td>
+			</tr>
+			
+			<tr>
+				<td>
+		<h1>날짜별 총액1</h1></td></tr>
+		<tr th:each="data : ${date_price}">
+			<td th:text="123"></td>
+			<td th:text="${data[0]}"></td>
+			<td th:text="1234"></td>
+			<td th:text="${data[1]}"></td>
+			</tr>
+		
+		
+		<h1>날짜별 총액2</h1></td></tr>
+		<tr th:each="data : ${branch_Total}">
+			<td th:text="${data[0]}"></td>
+			<td th:text="${data[1]}"></td>
+			
+			</tr>
+		<tr><td><h1>지점 테마별 총액</h1></td></tr>
+		<tr th:each="data : ${branchThemaTotal}">
+			<td th:text="${data[0]}"></td>
+			<td th:text="${data[1]}"></td>
+			<td th:text="${data[2]}"></td>
+			
+			</tr>
+		<tr><td><h1>branchListTotal</h1></td></tr>
+		<tr th:each="data : ${branchListTotal}">
+			<td th:text="${data[0]}"></td>
+			<td th:text="${data[1]}"></td>
+			
+			
+			</tr>
+	
+
+	</table>
+	<canvas id="salesChart" width="200" height="200" style="width: 200px;height: 200px;"></canvas>
+	
+	<canvas id="salesChart2" width="200" height="200" style="width: 200px;height: 200px;"></canvas>
+	<canvas id="salesChart3" width="200" height="200" style="width: 200px;height: 200px;"></canvas>
+	<canvas id="salesChart4" width="200" height="200" style="width: 200px;height: 200px;"></canvas>
+	
+	<script th:inline="javascript">
+		var salesData = [[${date_price}]];  // Thymeleaf에서 데이터 가져오기
+		var salesData2 = [[${branchListTotal}]];  // Thymeleaf에서 데이터 가져오기
+		var salesData3 = [[${branchThemaTotal}]];  // Thymeleaf에서 데이터 가져오기
+		var backgroundColors = []; // 색상 배열
+
+for (var i = 0; i < salesData2.length; i++) {
+    backgroundColors.push(getRandomColor()); // 무작위 색상을 생성하여 배열에 추가
+}
+var ctx = document.getElementById('salesChart4').getContext('2d');
+		var salesChart = new Chart(ctx, {
+			type: 'bar',
+
+			data: {
+				labels: [1,2,3,4],
+				datasets: [{
+					label: '테마별 총금액',
+					data: [1,2,3,4],
+					backgroundColor: 'rgba(75, 192, 192, 0.2)',
+					borderColor: 'rgba(75, 192, 192, 1)',
+					borderWidth: 1
+				}]
+			},
+			options: {
+				responsive: false,
+				scales: {
+					y: {
+						beginAtZero: true
+					}
+				}
+			}
+		});
+
+
+
+
+
+
+		var ctx = document.getElementById('salesChart').getContext('2d');
+		var salesChart = new Chart(ctx, {
+			type: 'bar',
+
+			data: {
+				labels: salesData.map(function (item) {return item[0];}),
+				datasets: [{
+					label: '테마별 총금액',
+					data: salesData.map(function (item) {return item[1];}),
+					backgroundColor: 'rgba(75, 192, 192, 0.2)',
+					borderColor: 'rgba(75, 192, 192, 1)',
+					borderWidth: 1
+				}]
+			},
+			options: {
+				responsive: false,
+				scales: {
+					y: {
+						beginAtZero: true
+					}
+				}
+			}
+		});
+		
+		var ctx = document.getElementById('salesChart2').getContext('2d');
+		var salesChart = new Chart(ctx, {
+			type: 'pie',
+
+			data: {
+				labels: salesData2.map(function (item) {return item[0];}),
+				datasets: [{
+					label: '지점별 총금액',
+					data: salesData2.map(function (item) {return item[1];}),
+					backgroundColor: backgroundColors,
+					borderColor: 'rgba(75, 192, 192, 1)',
+					borderWidth: 1
+				}]
+			},
+			options: {
+				responsive: false,
+				scales: {
+					y: {
+						beginAtZero: true
+					}
+				}
+			}
+		});
+		var ctx = document.getElementById('salesChart3').getContext('2d');
+		var salesChart = new Chart(ctx, {
+			type: 'bar-line',
+
+			data: {
+				labels: salesData3.map(function (item) {return item[1];}),
+				datasets: [{
+					label: '지점별 총금액',
+					data: salesData3.map(function (item) {return item[2];}),
+					backgroundColor: backgroundColors,
+					borderColor: 'rgba(75, 192, 192, 1)',
+					borderWidth: 1
+				}]
+			},
+			options: {
+				responsive: false,
+				scales: {
+					y: {
+						beginAtZero: true
+					}
+				}
+			}
+		});
+	// 무작위 색상을 생성하는 함수
+function getRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}	
+		
+	</script>
+
+</body>
+
+</html>

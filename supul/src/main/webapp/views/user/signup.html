@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>회원가입</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script th:inline="javascript">
+	    $(document).ready(function() {
+	        // 회원가입 버튼 요소 가져오기
+	        var signupButton = $("#signupButton");
+	        var signupMessage = $("#signupMessage");
+	
+	        // 가입하기 버튼 클릭 이벤트 처리
+	        signupButton.click(function(e) {
+	            e.preventDefault(); // 기본 동작 (폼 제출) 방지
+	
+	            // 아이디와 이메일 중복 확인 상태 가져오기
+	            var usernameStatus = $("#usernameStatus").text();
+	            var emailStatus = $("#emailStatus").text();
+	
+	            // 아이디 중복 확인 및 이메일 중복 확인을 하지 않은 경우
+	            if (usernameStatus !== "사용 가능한 아이디입니다." || emailStatus !== "사용 가능한 이메일입니다.") {
+	                signupMessage.text("아이디와 이메일 중복 확인을 먼저 진행해주세요.");
+	                return;
+	            }
+	
+	            // 중복 확인이 모두 성공한 경우, 폼을 제출하여 회원가입 진행
+	            $("form").submit();
+	        });
+	
+	        /* 아이디 중복 검사 */
+	        $("#checkUsernameButton").click(function() {
+	            var userid = $("#userid").val();
+	            if (userid) {
+	                $.get("/user/checkUsername?username=" + userid, function(data) {
+	                    if (data === "duplicate") {
+	                        $("#usernameStatus").text("이미 사용 중인 아이디입니다.");
+	                        // 아이디 중복일 경우 회원가입 메시지 초기화
+	                        signupMessage.text("");
+	                    } else {
+	                        $("#usernameStatus").text("사용 가능한 아이디입니다.");
+	                        // 아이디 중복이 아닐 경우 회원가입 메시지 초기화
+	                        signupMessage.text("");
+	                    }
+	                });
+	            } else {
+	                $("#usernameStatus").text("아이디를 입력하세요.");
+	                // 아이디를 입력하지 않은 경우 회원가입 메시지 초기화
+	                signupMessage.text("");
+	            }
+	        });
+	
+	        /* 이메일 중복 검사 */
+	        $("#checkEmailButton").click(function() {
+	            var email = $("#email").val();
+	            if (email) {
+	                $.get("/user/checkEmail?email=" + email, function(data) {
+	                    if (data === "duplicate") {
+	                        $("#emailStatus").text("이미 사용 중인 이메일입니다.");
+	                        // 이메일 중복일 경우 회원가입 메시지 초기화
+	                        signupMessage.text("");
+	                    } else {
+	                        $("#emailStatus").text("사용 가능한 이메일입니다.");
+	                        // 이메일 중복이 아닐 경우 회원가입 메시지 초기화
+	                        signupMessage.text("");
+	                    }
+	                });
+	            } else {
+	                $("#emailStatus").text("이메일을 입력하세요.");
+	                // 이메일을 입력하지 않은 경우 회원가입 메시지 초기화
+	                signupMessage.text("");
+	            }
+	        });
+	    });
+	</script>
+
+</head>
+<body>
+    <h2>회원가입</h2>
+    <form th:object="${member}" method="post">
+        <table border="">
+            <tr>
+                <td>아이디:</td>
+                <td>
+                    <input type="text" id="userid" th:field="*{userid}">
+                    <div th:if="${#fields.hasErrors('userid')}" th:errors="*{userid}" />
+                    <button type="button" id="checkUsernameButton">아이디 중복 확인</button>
+					<div id="usernameStatus"></div>
+                </td>
+            </tr>
+            <tr>
+                <td>비밀번호:</td>
+                <td>
+                    <input type="password" id="userpw" th:field="*{userpw}">
+                    <div th:if="${#fields.hasErrors('userpw')}" th:errors="*{userpw}" />
+                </td>
+            </tr>
+            <tr>
+                <td>비밀번호 확인:</td>
+                <td>
+                    <input type="password" id="userpw1" th:field="*{userpw1}">
+                    <div th:if="${#fields.hasErrors('userpw1')}" th:errors="*{userpw1}" />
+                </td>
+            </tr>
+            <tr>
+                <td>이름:</td>
+                <td>
+                    <input type="text" id="username" th:field="*{username}">
+                    <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}" />
+                </td>
+            </tr>
+            <tr>
+                <td>생년월일:</td>
+                <td>
+                    <input type="text" id="birth" th:field="*{birth}">
+                    <div th:if="${#fields.hasErrors('birth')}" th:errors="*{birth}" />
+                </td>
+            </tr>
+            <tr>
+                <td>이메일:</td>
+                <td>
+                    <input type="text" id="email" th:field="*{email}">
+                    <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" />
+                    <button type="button" id="checkEmailButton" onclick="checkEmail()">이메일 중복 확인</button>
+					<div id="emailStatus"></div>
+                </td>
+            </tr>
+            <tr>
+                <td>연락처:</td>
+                <td>
+                    <input type="text" id="phone" th:field="*{phone}">
+                    <div th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <button type="submit" id="signupButton">가입하기</button>
+					<div id="signupMessage"></div>
+                </td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>
